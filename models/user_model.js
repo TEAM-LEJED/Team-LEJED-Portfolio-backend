@@ -1,3 +1,4 @@
+import { String } from "joi";
 import { Schema, model } from "mongoose";
 
 
@@ -8,6 +9,7 @@ const userSchema = new Schema({
         otherNames: { type: String },
         email: { type: String, unique: true },
         password: { type: String },
+        confirmPassword: { type: String },
         userName: { type: String, unique: true },
     },
 
@@ -15,6 +17,7 @@ const userSchema = new Schema({
         profilePicture: { type: String },
         location: { type: String },
         sex: { type: String, enum: ['male', 'female'] },
+        jobTitle: { type: String},
         bio: { type: String },
         contact: { type: String },
         resume: { type: String },
@@ -69,6 +72,7 @@ const userSchema = new Schema({
     projects:
         [
             {
+                image: {type: String},
                 projectName: { type: String },
                 description: { type: String },
                 contributors: { type: String },
