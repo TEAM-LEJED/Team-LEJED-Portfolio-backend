@@ -4,7 +4,8 @@ import cors from "cors";
 
 
 // Connect to database
-// await mongoose.connect(process.env.MONGO_URL);
+await mongoose.connect(process.env.MONGO_URL);
+console.log('Database is connected');
 
 const app = express();
 
