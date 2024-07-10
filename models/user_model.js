@@ -11,6 +11,7 @@ const userSchema = new Schema({
         password: { type: String },
         confirmPassword: { type: String },
         userName: { type: String, unique: true },
+        termsAndConditions: { type: String },
     },
 
     userProfile: {
