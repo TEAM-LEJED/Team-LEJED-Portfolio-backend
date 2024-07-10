@@ -1,7 +1,6 @@
 import Joi from 'joi'
 
 export const userSchema = Joi.object({
-  user:{
     firstName:Joi.string().required(),
     lastName:Joi.string().required(),
     otherNames:Joi.string(),
@@ -12,4 +11,4 @@ export const userSchema = Joi.object({
     termsAndConditions: Joi.boolean()
   }
     
-})
+)
