@@ -1,5 +1,5 @@
 import { String } from "joi";
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 
 const userSchema = new Schema({
@@ -16,19 +16,21 @@ const userSchema = new Schema({
     userProfile: {
         profilePicture: { type: String },
         location: { type: String },
-        sex: { type: String, enum: ['male', 'female'] },
-        jobTitle: { type: String},
+        sex: { type: String, enum: ['Male', 'Female'] },
+        jobTitle: { type: String },
         bio: { type: String },
         contact: { type: String },
         resume: { type: String },
-        languagesSpoken: { type: String }
+        languagesSpoken: { type: String },
+        user: { type: Types.ObjectId, ref: 'User' }
     },
 
     skills:
         [
             {
                 name: { type: String },
-                levelOfProficiency: { type: String, enum: ['beginner', 'intermediate', 'advanced', 'expert'] }
+                levelOfProficiency: { type: String, enum: ['beginner', 'intermediate', 'advanced', 'expert'] },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
@@ -42,6 +44,7 @@ const userSchema = new Schema({
                 location: { type: String },
                 startDate: { type: String },
                 endDate: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
@@ -55,6 +58,7 @@ const userSchema = new Schema({
                 grade: { type: String },
                 startDate: { type: String },
                 endDate: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
@@ -66,13 +70,14 @@ const userSchema = new Schema({
                 image: { type: String },
                 date: { type: String },
                 nameOfInstitution: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
     projects:
         [
             {
-                image: {type: String},
+                image: { type: String },
                 projectName: { type: String },
                 description: { type: String },
                 contributors: { type: String },
@@ -81,6 +86,7 @@ const userSchema = new Schema({
                 nameOfInstitution: { type: String },
                 startDate: { type: String },
                 endDate: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
@@ -90,6 +96,7 @@ const userSchema = new Schema({
                 githubLink: { type: String },
                 linkedinLink: { type: String },
                 twitterLink: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
@@ -104,7 +111,8 @@ const userSchema = new Schema({
                 role: { type: String },
                 responsibility: { type: String },
                 location: { type: String },
-                projectName: { type: String }
+                projectName: { type: String },
+                user: { type: Types.ObjectId, ref: 'User' }
             }
         ],
 
