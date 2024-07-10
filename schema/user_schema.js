@@ -7,9 +7,9 @@ export const userSchema = Joi.object({
     otherNames:Joi.string(),
     email:Joi.string().email().required(),
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-    confirmedPassword: Joi.ref(password),
+    confirmedPassword: Joi.ref('password'),
     userName: Joi.string().required(),
-    termsAndConditions: Joi.boolean(),
+    termsAndConditions: Joi.boolean()
   }
     
 })
