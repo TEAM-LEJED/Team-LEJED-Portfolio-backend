@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 
-export const userSchema = Joi.object({
+export const educationSchema = Joi.object({
     schoolName: Joi.string().required(),
     program: Joi.string().required(),
     qualification: Joi.string().required(),
