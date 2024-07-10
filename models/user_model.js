@@ -1,9 +1,9 @@
+import {toJSON} from '@reis/mongoose-to-json'
 import { String } from "joi";
 import { Schema, Types, model } from "mongoose";
 
 
 const userSchema = new Schema({
-    user: {
         firstName: { type: String },
         lastName: { type: String },
         otherNames: { type: String },
@@ -12,6 +12,9 @@ const userSchema = new Schema({
         confirmPassword: { type: String },
         userName: { type: String, unique: true },
         termsAndConditions: { type: String },
+        githubLink: { type: String },
+        linkedinLink: { type: String },
+        twitterLink: { type: String },
     },
 
     userProfile: {
@@ -118,6 +121,5 @@ const userSchema = new Schema({
         ],
 
 })
-
-
+userSchema.plugin(toJSON);
 export const User = model('User', userSchema)
