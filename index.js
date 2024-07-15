@@ -1,7 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import {educationRouter} from "./routes/education_route.js";
+import expressOasGenerator from "@mickeymond/express-oas-generator"
+import { experienceRouter } from "./routes/experience_route.js"
+import { achievementRouter } from "./routes/achievement_route.js";
+import { volunteeringRouter } from "./routes/volunteering_route.js";
+import { projectRouter } from "./routes/project_route.js";
+import { educationRouter } from "./routes/education_route.js";
 import { userRouter } from "./routes/user_route.js";
 import { skillRouter } from "./routes/skills_route.js";
 import session from "express-session";
@@ -12,6 +17,13 @@ import { userProfileRouter } from "./routes/userProfile_route.js";
 
 const app = express();
 
+expressOasGenerator.handleResponses(app, {
+    alwaysServeDocs: true,
+    tags: ['auth', 'userProfile', 'skills', 'projects', 'volunteering', 'experience', 'education', 'achievements'],
+    mongooseModels: mongoose.modelNames(),
+});
+
+
 // Apply middlewares
 app.use(express.json());
 app.use(cors());
@@ -20,6 +32,7 @@ app.use(cors());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
+    saveUninitialized: true,
     // cookie: { secure: true}
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
@@ -27,12 +40,21 @@ app.use(session({
 }));
 
 
+
+
 // Use routes
 app.use('/api/v1', userRouter);
 app.use('/api/v1', skillRouter);
 app.use('/api/v1', userProfileRouter);
-app.use('/api/v1', educationRouter)
+app.use('/api/v1', educationRouter);
+app.use('/api/v1', projectRouter);
+app.use('/api/v1', experienceRouter);
+app.use('/api/v1', achievementRouter);
+app.use('/api/v1', volunteeringRouter);
+
+expressOasGenerator.handleRequests();
 app.use((req, res) => res.redirect('/api-docs/'));
+
 
 
 

@@ -2,7 +2,7 @@ import { createProjects, deleteProjects, getProjects, patchProjects } from "../c
 import { checkUserSession } from "../middlewares/auth.js";
 
 import { Router } from "express";
-import { remoteUpload } from "../middlewares/uploads.js";
+import { remoteUpload } from "../middlewares/upload.js";
 
 
 export const projectRouter = Router()

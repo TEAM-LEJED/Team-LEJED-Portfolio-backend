@@ -1,6 +1,6 @@
 
 import { achievementsSchema } from "../schema/achievements_schema.js";
-import { User } from "../models/user_model.js";
+import { UserModel } from "../models/user_model.js";
 import { Achievements } from "../models/achievements_model.js";
 
 export const createAchievements = async (req, res) => {
@@ -16,7 +16,7 @@ export const createAchievements = async (req, res) => {
 
     const userSessionId = req.session.user.id;
    
-    const user = await User.findById(userSessionId);
+    const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -53,7 +53,7 @@ export const findAllAchievements = async (req, res) => {
 
 export const patchAchievements = async (req, res) => {
     try {
-      const { error, value } = achievementSchema.validate({  
+      const { error, value } = achievementsSchema.validate({  
         ...req.body,
         award: req.files.award[0].filename,
         image: req.files.image[0].filename,});
@@ -64,7 +64,7 @@ export const patchAchievements = async (req, res) => {
       }
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -86,7 +86,7 @@ export const patchAchievements = async (req, res) => {
      
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
