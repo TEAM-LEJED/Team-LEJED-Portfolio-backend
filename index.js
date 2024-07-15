@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-// import educationRouter from "./routes/education_route.js";
+import {educationRouter} from "./routes/education_route.js";
 import { userRouter } from "./routes/user_route.js";
 import { skillRouter } from "./routes/skills_route.js";
 import session from "express-session";
