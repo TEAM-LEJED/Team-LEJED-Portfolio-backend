@@ -1,5 +1,4 @@
 import { Schema, model, Types } from "mongoose";
-import {toJSON} from '@reis/mongoose-to-json'
 
 const userProfileSchema = new Schema({
         profilePicture: { type: String },
@@ -11,8 +10,9 @@ const userProfileSchema = new Schema({
         resume: { type: String },
         languagesSpoken: { type: String },
         user:{type:Types.ObjectId, ref:'User'}
-})
+}, {
+        timestamps: true
+    });
 
 
-userProfileSchema.plugin(toJSON);
 export const userProfile = model("Profile", userProfileSchema)
