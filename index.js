@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import expressOasGenerator from "@mickeymond/express-oas-generator"
 import {educationRouter} from "./routes/education_route.js";
 import { userRouter } from "./routes/user_route.js";
 import { skillRouter } from "./routes/skills_route.js";
@@ -12,6 +13,13 @@ import { userProfileRouter } from "./routes/userProfile_route.js";
 
 const app = express();
 
+expressOasGenerator.handleResponses(app,{
+    alwaysServeDocs: true,
+    tags: ['users', 'education' ],
+    mongooseModels:mongoose.modelNames(),
+});
+
+
 // Apply middlewares
 app.use(express.json());
 app.use(cors());
@@ -20,12 +28,15 @@ app.use(cors());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
+    saveUninitialized:true,
     // cookie: { secure: true}
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
     })
 }));
 
+
+expressOasGenerator.handleRequests();
 
 // Use routes
 app.use('/api/v1', userRouter);
