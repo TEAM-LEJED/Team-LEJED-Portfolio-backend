@@ -1,5 +1,6 @@
 import { Education } from "../models/education_model.js";
-import { User } from "../models/user_model.js";
+
+import { UserModel } from "../models/user_model.js";
 import { educationSchema } from "../schema/education_schema.js";
 
 export const createEducation = async (req, res) => {
@@ -17,7 +18,7 @@ export const createEducation = async (req, res) => {
 
     const userSessionId = req.session.user.id
 
-    const user = await User.findById(userSessionId);
+    const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -59,7 +60,7 @@ export const patchEducation = async (req, res) => {
       }
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -81,7 +82,7 @@ export const patchEducation = async (req, res) => {
      
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
