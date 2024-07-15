@@ -28,6 +28,7 @@ app.use(cors());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
+    saveUninitialized:true,
     // cookie: { secure: true}
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
