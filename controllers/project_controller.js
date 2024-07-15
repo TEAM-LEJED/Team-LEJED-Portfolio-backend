@@ -1,6 +1,5 @@
-import { UserProfile } from "../models/userProfile_model.js";
 import { projectSchema } from "../schema/project_schema.js";
-import { User } from "../models/user_model.js";
+import { UserModel } from "../models/user_model.js";
 
 import { Project } from "../models/project_models.js";
 
@@ -14,7 +13,7 @@ export const createProjects = async (req, res) => {
 
     const userSessionId = req.session.user.id;
    
-    const user = await User.findById(userSessionId);
+    const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -59,7 +58,7 @@ export const patchProjects = async (req, res) => {
       }
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -81,7 +80,7 @@ export const patchProjects = async (req, res) => {
      
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }

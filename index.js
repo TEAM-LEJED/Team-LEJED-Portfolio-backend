@@ -2,7 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import expressOasGenerator from "@mickeymond/express-oas-generator"
-import {educationRouter} from "./routes/education_route.js";
+import { experienceRouter } from "./routes/experience_route.js"
+import { achievementRouter } from "./routes/achievement_route.js";
+import { volunteeringRouter } from "./routes/volunteering_route.js";
+import { projectRouter } from "./routes/project_route.js";
+import { educationRouter } from "./routes/education_route.js";
 import { userRouter } from "./routes/user_route.js";
 import { skillRouter } from "./routes/skills_route.js";
 import session from "express-session";
@@ -13,10 +17,10 @@ import { userProfileRouter } from "./routes/userProfile_route.js";
 
 const app = express();
 
-expressOasGenerator.handleResponses(app,{
+expressOasGenerator.handleResponses(app, {
     alwaysServeDocs: true,
-    tags: ['users', 'education' ],
-    mongooseModels:mongoose.modelNames(),
+    tags: ['auth', 'userProfile', 'skills', 'projects', 'volunteering', 'experience', 'education', 'achievements'],
+    mongooseModels: mongoose.modelNames(),
 });
 
 
@@ -28,7 +32,7 @@ app.use(cors());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized:true,
+    saveUninitialized: true,
     // cookie: { secure: true}
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
@@ -36,14 +40,21 @@ app.use(session({
 }));
 
 
-expressOasGenerator.handleRequests();
+
 
 // Use routes
 app.use('/api/v1', userRouter);
 app.use('/api/v1', skillRouter);
 app.use('/api/v1', userProfileRouter);
-app.use('/api/v1', educationRouter)
+app.use('/api/v1', educationRouter);
+app.use('/api/v1', projectRouter);
+app.use('/api/v1', experienceRouter);
+app.use('/api/v1', achievementRouter);
+app.use('/api/v1', volunteeringRouter);
+
+expressOasGenerator.handleRequests();
 app.use((req, res) => res.redirect('/api-docs/'));
+
 
 
 

@@ -1,7 +1,7 @@
-import { userProfile } from "../models/userProfile.js";
+// import { userProfile } from "../models/userProfile.js";
 import { experienceSchema } from "../schema/experience_schema.js";
 import { userProfileSchema } from "../schema/user_profile_schema.js";
-import { User } from "../models/user_model.js";
+import { UserModel } from "../models/user_model.js";
 import { Experience } from "../models/experience_model.js";
 
 export const createExperience = async (req, res) => {
@@ -15,7 +15,7 @@ export const createExperience = async (req, res) => {
     const userSessionId = req.session.user.id;
    
 
-    const user = await User.findById(userSessionId);
+    const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -59,7 +59,7 @@ export const patchExperience = async (req, res) => {
       }
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -81,7 +81,7 @@ export const patchExperience = async (req, res) => {
      
   
       const userSessionId = req.session.user.id; 
-      const user = await User.findById(userSessionId);
+      const user = await UserModel.findById(userSessionId);
       if (!user) {
         return res.status(404).send("User not found");
       }
