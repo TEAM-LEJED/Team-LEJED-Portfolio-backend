@@ -1,12 +1,12 @@
-import Joi from "joi";
+import joi from "joi";
 
-export const achievementsSchema = Joi.object({
-    awards: Joi.string().required(),
-    description: Joi.string().required(),
-    image: Joi.string().required(),
-    date: Joi.string(),
-    nameOfInstitution: Joi.string().required(),
-    user:Joi.string().required(),
+export const achievementsSchema = joi.object({
+    awards: joi.string(),
+    description: joi.string().required(),
+    image: joi.string().optional(),
+    date: joi.string().required(),
+    nameOfInstitution: joi.string().required(),
+    user:joi.string(),
 })   
 
 

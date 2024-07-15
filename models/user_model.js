@@ -1,5 +1,4 @@
 import {toJSON} from '@reis/mongoose-to-json'
-import { String } from "joi";
 import { Schema, Types, model } from "mongoose";
 
 

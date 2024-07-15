@@ -1,6 +1,5 @@
 
 import { Schema, model, Types } from "mongoose";
-import {toJSON} from '@reis/mongoose-to-json'
 
 const userExperienceSchema = new Schema({
         companyName: { type: String },
@@ -10,9 +9,12 @@ const userExperienceSchema = new Schema({
         location: { type: String },
         startDate: { type: String },
         endDate: { type: String },
-        user:{type:Types.ObjectId, ref:'User'}
+        user: {type: Types.ObjectId, ref: 'User', select:false}
 
-})
-userExperienceSchema.plugin(toJSON);
+
+}, {
+        timestamps: true
+      });
+
 
 export const Experience = model("Experience", userExperienceSchema)
