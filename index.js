@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+// import educationRouter from "./routes/education_route.js";
 import { userRouter } from "./routes/user_route.js";
 import { skillRouter } from "./routes/skills_route.js";
 import session from "express-session";
@@ -8,11 +9,14 @@ import MongoStore from "connect-mongo";
 import { userProfileRouter } from "./routes/userProfile_route.js";
 
 
+
 const app = express();
 
 // Apply middlewares
 app.use(express.json());
 app.use(cors());
+
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -27,7 +31,9 @@ app.use(session({
 app.use('/api/v1', userRouter);
 app.use('/api/v1', skillRouter);
 app.use('/api/v1', userProfileRouter);
+app.use('/api/v1', educationRouter)
 app.use((req, res) => res.redirect('/api-docs/'));
+
 
 
 // Listen for incoming requests

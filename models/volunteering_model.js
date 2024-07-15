@@ -1,5 +1,4 @@
 import { Schema, Types, model } from "mongoose";
-import { String } from "joi";
 
 
 const volunteeringSchema = new Schema({
@@ -12,8 +11,11 @@ const volunteeringSchema = new Schema({
     responsibility: { type: String },
     location: { type: String },
     projectName: { type: String },
-    user: { type: Types.ObjectId, ref: 'User' }
-})
+    user: {type: Types.ObjectId, ref: 'User', select:false}
+
+}, {
+    timestamps: true
+  });
 
 
 export const Volunteering = model('Volunteering', volunteeringSchema)
