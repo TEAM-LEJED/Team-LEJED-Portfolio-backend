@@ -24,7 +24,7 @@ export const addSkill = async (req, res, next) => {
 
         // Create skills with the value
         const skills = await Skills.create({...value, user: userSessionId});
-        // If the user was found,push the skills id you just created inside
+        // If the user was found,push the id of the skills you just created inside the user
         user.skills.push(skills._id);
          // And save the user now with the skills id
         await user.save();

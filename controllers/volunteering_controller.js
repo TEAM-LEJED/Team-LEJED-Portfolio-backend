@@ -2,14 +2,19 @@ import { volunteeringSchema } from "../schema/volunteering_schema.js";
 import { UserModel } from "../models/user_model.js";
 import { Volunteering } from "../models/volunteering_model.js";
 
+
+
+// Function to add a volunteering activity
 export const createVolunteering = async (req, res) => {
   try {
+    // Valiadte data provided by the user
     const { error, value } = volunteeringSchema.validate(req.body);
 
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
 
+    // Retrieve user session
     const userSessionId = req.session.user.id;
 
     const user = await UserModel.findById(userSessionId);
@@ -17,24 +22,31 @@ export const createVolunteering = async (req, res) => {
       return res.status(404).send("User not found");
     }
 
+    // Add a volunteering activity
     const volunteering = await Volunteering.create({
       ...value,
       user: userSessionId,
     });
 
+    // If the user was found,push the id of the volunteering you just created inside the user
     user.volunteering.push(volunteering._id);
 
+    // And save the user now with the volunteering id
     await user.save();
 
+    // Return response
     res.status(201).json({ volunteering });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getVolunteer = async (req, res) => {
+
+
+// Function to get all volunteering activities of a particular user
+export const getAllVolunteering = async (req, res) => {
   try {
-    //we are fetching Volunteering that belongs to a particular user
+    //Fetch Volunteering that belongs to a particular user
     const userSessionId = req.session.user.id;
     const allVolunteering = await Volunteering.find({ user: userSessionId });
     if (allVolunteering.length == 0) {
@@ -46,20 +58,26 @@ export const getVolunteer = async (req, res) => {
   }
 };
 
-export const patchVolunteer = async (req, res) => {
+
+
+// Function to update a volunteering activity of a user
+export const updateVolunteering = async (req, res) => {
   try {
+    // Validate data provided by user
     const { error, value } = volunteeringSchema.validate(req.body);
 
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
 
+    // Retrieve user session
     const userSessionId = req.session.user.id;
     const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
+    // Update volunteering
     const volunteering = await Volunteering.findByIdAndUpdate(
       req.params.id,
       value,
@@ -75,23 +93,30 @@ export const patchVolunteer = async (req, res) => {
   }
 };
 
-export const deleteVolunteer = async (req, res) => {
+
+
+// Function to delete a volunteering activity of a user
+export const deleteVolunteering = async (req, res) => {
   try {
+    // Retrieve user session
     const userSessionId = req.session.user.id;
     const user = await UserModel.findById(userSessionId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
+    // Delete volunteering activity
     const volunteering = await Volunteering.findByIdAndDelete(req.params.id);
     if (!volunteering) {
       return res.status(404).send("Volunteering not found");
     }
 
+    // Remove the deleted volunteering activity from the particular user
     user.volunteering.pull(req.params.id);
+    // Save the change
     await user.save();
 
-    res.status(200).json("Volunteering deleted");
+    res.status(200).json("Volunteering activity deleted successfully");
   } catch (error) {
     return res.status(500).json({ error });
   }

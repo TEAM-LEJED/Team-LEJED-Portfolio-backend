@@ -7,8 +7,9 @@ import { UserModel } from "../models/user_model.js";
 export const newUserProfile = async (req, res, next) => {
     try {
         // Validate data provided by user
-        const { error, value } = userProfileSchema.validate({...req.body, 
-            profilePicture: req.files.profilePicture[0].fileName, 
+        const { error, value } = userProfileSchema.validate({
+            ...req.body,
+            profilePicture: req.files.profilePicture[0].fileName,
             resume: req.files.resume[0].fileName,
         });
         if (error) {
@@ -17,48 +18,50 @@ export const newUserProfile = async (req, res, next) => {
 
         // Retrieve user session
         const userSessionId = req.session.user.id
-        const user = await UserModel.findById(userSessionId)
-        if(!user){
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
             return res.status(404).send('User not found')
         }
 
         // Create user profile
-        const profile = await userProfile.create({...value, user: userSessionId});
+        const profile = await userProfile.create({ ...value, user: userSessionId });
         user.userProfile = profile._id
 
         await user.save()
         // Return response
-        res.status(201).json({profile})
+        res.status(201).json({ profile })
     } catch (error) {
         next(error)
     }
 }
 
 
+
 // Function to update a user profile
 export const updateUserProfile = async (req, res, next) => {
     try {
         // Validate data provided by user
-        const { error, value } = userProfileSchema.validate({...req.body,
+        const { error, value } = userProfileSchema.validate({
+            ...req.body,
             profilePicture: req.files.profilePicture[0].fileName,
             resume: req.files.resume[0].fileName,
         });
-        if(error) {
+        if (error) {
             return res.status(400).send(error.details[0].message);
         }
         // Retrieve user session
         const userSessionId = req.session.user.id;
         const user = await UserModel.findById(userSessionId);
-        if(!user) {
+        if (!user) {
             return res.status(404).send('User not found');
         }
         // Update user profile by id
-        const updatedUserProfile = await userProfile.findByIdAndUpdate(req.params.id, value, {new: true});
-        if(!profile) {
+        const profile = await userProfile.findByIdAndUpdate(req.params.id, value, { new: true });
+        if (!profile) {
             return res.status(404).send('Profile not found');
         }
         // Return response
-        res.status(200).json(updatedUserProfile)
+        res.status(200).json({ profile })
     } catch (error) {
         next(error)
     }
@@ -71,27 +74,16 @@ export const getUserProfile = async (req, res) => {
         // Retrieve user session
         const userSessionId = req.session.user.id
         // Get user profile 
-        const profile = await userProfile.find({ user: userSessionId});
+        const profile = await userProfile.find({ user: userSessionId });
         if (!profile) {
             return res.status(404).send('No profile added');
         }
         // Return response
-        res.status(200).json({profile});
+        res.status(200).json({ profile });
     } catch (error) {
-        return res.status(500).json({error})
+        return res.status(500).json({ error })
     }
 }
 
 
 
-// Function to delete the user profile
-export const deleteUserProfile = async (req, res, next) => {
-    try {
-        // Delete user profile by id
-        const deletedUserProfile = await userProfile.findByIdAndDelete(req.params.id);
-        // Return response
-        res.status(200).json('User profile has been successfully deleted')
-    } catch (error) {
-        next(error)
-    }
-}
