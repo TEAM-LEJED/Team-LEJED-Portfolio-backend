@@ -1,4 +1,4 @@
-import { deleteUser, getUser, patchUser, signup, login, logout } from "../controllers/user_controller.js";
+import { getUser, patchUser, signup, login, logout } from "../controllers/user_controller.js";
 import { Router } from "express";
 import { checkUserSession } from "../middlewares/auth.js";
 
@@ -16,4 +16,3 @@ userRouter.get('/users/:userName', getUser);
 
 userRouter.patch('/users/:id', checkUserSession, patchUser);
 
-userRouter.delete('/users/:id', checkUserSession, deleteUser);

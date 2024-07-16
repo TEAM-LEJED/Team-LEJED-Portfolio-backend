@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUserProfile, getUserProfile, newUserProfile, updateUserProfile } from "../controllers/userProfile_controller.js";
+import { getUserProfile, newUserProfile, updateUserProfile } from "../controllers/userProfile_controller.js";
 import { checkUserSession } from "../middlewares/auth.js";
 
 
@@ -14,4 +14,3 @@ userProfileRouter.patch('users/userProfile', checkUserSession, updateUserProfile
 
 userProfileRouter.get('users/userProfile', getUserProfile);
 
-userProfileRouter.delete('users/userProfile', checkUserSession, deleteUserProfile)

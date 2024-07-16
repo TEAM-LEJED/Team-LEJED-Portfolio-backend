@@ -5,16 +5,14 @@ export const userProfileSchema = Joi.object({
     profilePicture: Joi.string(),
     location: Joi.string().required(),
     sex: Joi.string().valid('Male', 'Female'),
-    bio: Joi.string().required(),
-    contact: Joi.string().required(),
-    resume: Joi.string().required(),
-    languagesSpoken: Joi.string().required(),
-    user: Joi.string().required(),
+    bio: Joi.string(),
+    contact: Joi.string(),
+    resume: Joi.string(),
+    languagesSpoken: Joi.string(),
+    githubLink: Joi.string(),
+    linkedinLink: Joi.string(),
+    twitterLink: Joi.string(),
+    user: Joi.string()
 })
 
-    socials: [{
-        githubLink: Joi.string().required(),
-        linkedinLink: Joi.string().required(),
-        twitterLink: Joi.string().required(),
-        user: Joi.string().required()
-    }]
+
