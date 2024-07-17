@@ -1,6 +1,5 @@
-// import { userProfile } from "../models/userProfile.js";
+import { userProfile } from "../models/userProfile_model.js";
 import { experienceSchema } from "../schema/experience_schema.js";
-import { userProfileSchema } from "../schema/user_profile_schema.js";
 import { UserModel } from "../models/user_model.js";
 import { Experience } from "../models/experience_model.js";
 
@@ -52,7 +51,7 @@ export const getExperience = async (req, res) => {
 
 export const patchExperience = async (req, res) => {
     try {
-      const { error, value } = userProfileSchema.validate(req.body);
+      const { error, value } = experienceSchema.validate(req.body);
   
       if (error) {
         return res.status(400).send(error.details[0].message);
@@ -91,7 +90,7 @@ export const patchExperience = async (req, res) => {
             return res.status(404).send("experience not found");
         }
   
-        user.experiences.pull(req.params.id);
+        user.experience.pull(req.params.id);
         await user.save();
       res.status(200).json("Experience deleted");
     } catch (error) {
