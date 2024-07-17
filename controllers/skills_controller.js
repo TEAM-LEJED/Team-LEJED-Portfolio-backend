@@ -16,15 +16,15 @@ export const addSkill = async (req, res, next) => {
         // console.log('userId', req.sesion.user.id)
 
         // Retrieve user session
-        const userSessionId = req.session.user.id
-        const user = await UserModel.findById(userSessionId);
+        const userId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userId);
         if(!user){
             return res.status(404).send('User not found');
         }
 
         // Create skills with the value
-        const skills = await Skills.create({...value, user: userSessionId});
-        // If the user was found,push the skills id you just created inside
+        const skills = await Skills.create({...value, user: userId});
+        // If the user was found,push the id of the skills you just created inside the user
         user.skills.push(skills._id);
          // And save the user now with the skills id
         await user.save();
@@ -42,8 +42,8 @@ export const addSkill = async (req, res, next) => {
 export const getAllSkills = async (req, res) => {
     try {
         // Find skills for a particular user
-        const userSessionId = req.session.user.id
-        const allSkills = await Skills.find({ user: userSessionId });
+        const userId = req.session?.user?.id || req?.user?.id;
+        const allSkills = await Skills.find({ user: userId });
         if (allSkills.length == 0) {
             return res.status(404).send('No skill added')
         } else {
@@ -80,8 +80,8 @@ export const updateSkill = async (req, res) => {
             return res.status(400).send(error.details[0].message);
         }
         // Retrieve user session
-        const userSessionId = req.session.user.id
-        const user = await UserModel.findById(userSessionId);
+        const userId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userId);
         if(!user){
             return res.status(404).send('User not found');
         }

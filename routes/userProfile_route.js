@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { deleteUserProfile, getUserProfile, newUserProfile, updateUserProfile } from "../controllers/userProfile_controller.js";
-import { checkUserSession } from "../middlewares/auth.js";
+import { getUserProfile, newUserProfile, updateUserProfile } from "../controllers/userProfile_controller.js";
+import { checkAuth } from "../middlewares/auth.js";
 
 
 // Create and export router
@@ -8,10 +8,9 @@ export const userProfileRouter = Router()
 
 
 // Define routes
-userProfileRouter.post('users/userProfile', checkUserSession, newUserProfile);
+userProfileRouter.post('/users/userProfile', checkAuth, newUserProfile);
 
-userProfileRouter.patch('users/userProfile', checkUserSession, updateUserProfile);
+userProfileRouter.patch('/users/userProfile', checkAuth, updateUserProfile);
 
-userProfileRouter.get('users/userProfile', getUserProfile);
+userProfileRouter.get('/users/userProfile', checkAuth, getUserProfile);
 
-userProfileRouter.delete('users/userProfile', checkUserSession, deleteUserProfile)

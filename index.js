@@ -12,6 +12,7 @@ import { skillRouter } from "./routes/skills_route.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import { userProfileRouter } from "./routes/userProfile_route.js";
+import {restartServer} from "./restart_server.js"
 
 
 
@@ -24,9 +25,10 @@ expressOasGenerator.handleResponses(app, {
 });
 
 
+
 // Apply middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:5173'}));
 
 
 app.use(session({
@@ -34,12 +36,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     // cookie: { secure: true}
+    // Store session
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
     })
 }));
 
 
+// Health Check
+app.get('/api/v1/health', (req, res) => {
+    res.json({status: 'UP'});
+});
 
 
 // Use routes
@@ -56,15 +63,24 @@ expressOasGenerator.handleRequests();
 app.use((req, res) => res.redirect('/api-docs/'));
 
 
+const reboot = async () => {
+    setInterval(restartServer, process.env.INTERVAL) 
+}
 
 
-// Listen for incoming requests
-const port = process.env.PORT || 4800;
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-});
 
 
 // Connect to database
 await mongoose.connect(process.env.MONGO_URL);
 console.log('Database is connected');
+
+
+
+// Listen for incoming requests
+const port = process.env.PORT || 4800;
+app.listen(port, () => {
+    reboot().then(() => {
+        console.log('Server restarted');
+    })
+    console.log(`App listening on port ${port}`);
+});

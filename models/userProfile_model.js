@@ -3,7 +3,7 @@ import { Schema, model, Types } from "mongoose";
 const userProfileSchema = new Schema({
         profilePicture: { type: String },
         location: { type: String },
-        sex: { type: String, enum: ['male', 'female'] },
+        sex: { type: String, enum: ['Male', 'Female'] },
         jobTitle: { type: String},
         bio: { type: String },
         contact: { type: String },

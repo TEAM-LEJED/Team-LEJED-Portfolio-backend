@@ -1,14 +1,14 @@
-import joi from "joi";
+import Joi from "joi";
 
 
-export const educationSchema = joi.object({
-    schoolName: joi.string().required(),
-    program: joi.string().required(),
-    qualification: joi.string().required(),
-    location: joi.string(),
-    grade: joi.string(),
-    startDate: joi.string().required(),
-    endDate: joi.string(),
-    user: joi.string(),
+export const educationSchema = Joi.object({
+    schoolName: Joi.string().required(),
+    program: Joi.string().required(),
+    qualification: Joi.string().required(),
+    location: Joi.string(),
+    grade: Joi.string(),
+    startDate: Joi.string().required(),
+    endDate: Joi.string(),
+    user: Joi.string(),
 })
 
