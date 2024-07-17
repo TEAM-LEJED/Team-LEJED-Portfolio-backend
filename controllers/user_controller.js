@@ -103,7 +103,7 @@ export const tokenLogin = async (req, res, next) => {
                 // Create a token for the user
                 const token = jwt.sign({ id: user.id},
                      process.env.JWT_PRIVATE_KEY,
-                    { expiresIn: '1h' }
+                    { expiresIn: '2h' }
                     );
                 // Return response
                 res.status(200).json({
@@ -116,6 +116,7 @@ export const tokenLogin = async (req, res, next) => {
         next(error)
     }
 }
+
 
 
 // Function to get everything about one user
@@ -135,7 +136,7 @@ export const getUser = async (req, res, next) => {
             .populate({path: 'projects', options})
             .populate({path: 'volunteering', options});
         // Return response
-        res.status(200).json(getUserDetails)
+        res.status(200).json({user: getUserDetails})
     } catch (error) {
         // next(error)
         console.log(error)
