@@ -1,6 +1,7 @@
 import { UserModel } from "../models/user_model.js";
 import { userSchema } from "../schema/user_schema.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 
 
@@ -71,6 +72,44 @@ export const login = async (req, res, next) => {
                 // console.log('user', req.session.user)
                 // Return response
                 res.status(200).json('Login successful');
+            }
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+// Function for token log in
+export const tokenLogin = async (req, res, next) => {
+    try {
+        const { userName, email, password } = req.body;
+        
+        // Find a user using their userName or email
+        const user = await UserModel.findOne({
+            $or: [
+                { email: email },
+                { userName: userName }
+            ]
+        });
+        if (!user) {
+            res.status(401).json('User not found');
+        } else {
+            // Verify their password
+            const correctPassword = bcrypt.compareSync(password, user.password);
+            if (!correctPassword) {
+                res.status(401).json('Invalid login credentials');
+            } else {
+                // Create a token for the user
+                const token = jwt.sign({ id: user.id},
+                     process.env.JWT_PRIVATE_KEY,
+                    { expiresIn: '1h' }
+                    );
+                // Return response
+                res.status(200).json({
+                    message: 'User logged in',
+                    accessToken: token
+                });
             }
         }
     } catch (error) {

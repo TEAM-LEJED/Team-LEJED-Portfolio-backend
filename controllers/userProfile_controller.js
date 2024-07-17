@@ -17,14 +17,14 @@ export const newUserProfile = async (req, res, next) => {
         }
 
         // Retrieve user session
-        const userSessionId = req.session.user.id
-        const user = await UserModel.findById(userSessionId);
+        const userId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userId);
         if (!user) {
             return res.status(404).send('User not found')
         }
 
         // Create user profile
-        const profile = await userProfile.create({ ...value, user: userSessionId });
+        const profile = await userProfile.create({ ...value, user: userId });
         user.userProfile = profile._id
 
         await user.save()
@@ -50,8 +50,8 @@ export const updateUserProfile = async (req, res, next) => {
             return res.status(400).send(error.details[0].message);
         }
         // Retrieve user session
-        const userSessionId = req.session.user.id;
-        const user = await UserModel.findById(userSessionId);
+        const userId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userId);
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -71,10 +71,10 @@ export const updateUserProfile = async (req, res, next) => {
 // Function to get the user profile
 export const getUserProfile = async (req, res) => {
     try {
-        // Retrieve user session
-        const userSessionId = req.session.user.id
+        // Retrieve user session or request
+        const userId = req.session?.user?.id || req?.user?.id;
         // Get user profile 
-        const profile = await userProfile.find({ user: userSessionId });
+        const profile = await userProfile.find({ user: userId });
         if (!profile) {
             return res.status(404).send('No profile added');
         }
