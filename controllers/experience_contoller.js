@@ -12,17 +12,17 @@ export const createExperience = async (req, res) => {
       return res.status(400).send(error.details[0].message);
     }
 
-    const userSessionId = req.session.user.id;
+    const userId = req.session?.user?.id || req?.user?.id;
    
 
-    const user = await UserModel.findById(userSessionId);
+    const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    const experience = await Experience.create({ ...value, user: userSessionId });
+    const experience = await Experience.create({ ...value, user: userId });
 
-    user.experiences.push(experience._id)
+    user.experience.push(experience._id)
 
     await user.save();
 
@@ -37,8 +37,8 @@ export const createExperience = async (req, res) => {
 export const getExperience = async (req, res) => {
   try {
     //we are fetching Experience that belongs to a particular user
-    const userSessionId = req.session.user.id
-    const allExperience = await Experience.find({ user: userSessionId });
+    const userId = req.session?.user?.id || req?.user?.id;
+    const allExperience = await Experience.find({ user: userId });
     if (allExperience.length == 0) {
       return res.status(404).send("No Experience added");
     }
@@ -58,8 +58,8 @@ export const patchExperience = async (req, res) => {
         return res.status(400).send(error.details[0].message);
       }
   
-      const userSessionId = req.session.user.id; 
-      const user = await UserModel.findById(userSessionId);
+      const userId = req.session?.user?.id || req?.user?.id; 
+      const user = await UserModel.findById(userId);
       if (!user) {
         return res.status(404).send("User not found");
       }
@@ -80,8 +80,8 @@ export const patchExperience = async (req, res) => {
     try {
      
   
-      const userSessionId = req.session.user.id; 
-      const user = await UserModel.findById(userSessionId);
+      const userId = req.session?.user?.id || req?.user?.id; 
+      const user = await UserModel.findById(userId);
       if (!user) {
         return res.status(404).send("User not found");
       }
