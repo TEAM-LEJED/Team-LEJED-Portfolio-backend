@@ -76,7 +76,7 @@ export const getUserProfile = async (req, res) => {
         // Get user profile 
         const profile = await userProfile.find({ user: userId });
         if (!profile) {
-            return res.status(404).send('No profile added');
+            return res.status(404).send({ profile });
         }
         // Return response
         res.status(200).json({ profile });
