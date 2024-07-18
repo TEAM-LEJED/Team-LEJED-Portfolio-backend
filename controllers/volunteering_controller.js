@@ -60,6 +60,20 @@ export const getAllVolunteering = async (req, res) => {
 
 
 
+// Function to get one volunteering activity for a particular user
+export const getOneVolunteering = async (req, res) => {
+  try {
+      // Get volunteering activity by id
+      const getVolunteeringById = await Volunteering.findById(req.params.id);
+      // Return response
+      res.status(200).json(getVolunteeringById)
+  } catch (error) {
+      return res.status(200).json(error.message)
+  }
+}
+
+
+
 // Function to update a volunteering activity of a user
 export const updateVolunteering = async (req, res) => {
   try {
@@ -87,7 +101,7 @@ export const updateVolunteering = async (req, res) => {
       return res.status(404).send("Volunteering not found");
     }
 
-    res.status(200).json({ Volunteering });
+    res.status(200).json({ volunteering });
   } catch (error) {
     return res.status(500).json({ error });
   }

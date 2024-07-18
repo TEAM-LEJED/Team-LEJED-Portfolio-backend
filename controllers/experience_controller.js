@@ -1,4 +1,3 @@
-import { userProfile } from "../models/userProfile_model.js";
 import { experienceSchema } from "../schema/experience_schema.js";
 import { UserModel } from "../models/user_model.js";
 import { Experience } from "../models/experience_model.js";
@@ -17,6 +16,14 @@ export const createExperience = async (req, res) => {
     const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
+    }
+
+    // Extract the company name from the request body
+    const {companyName} = req.body
+    //  Check if that experience already exists
+    const existingExperience = await Experience.findOne({companyName: companyName}, {userId: userId});
+    if(existingExperience) {
+        return res.status(409).json('The experience already exists for this user')
     }
 
     const experience = await Experience.create({ ...value, user: userId });
@@ -46,6 +53,20 @@ export const getExperience = async (req, res) => {
     return res.status(500).json({error})
   }
 };
+
+
+
+// Function to get one experience for a particular user
+export const getOneExperience = async (req, res) => {
+  try {
+      // Get experience by id
+      const getExperienceById = await Experience.findById(req.params.id);
+      // Return response
+      res.status(200).json(getExperienceById)
+  } catch (error) {
+      return res.status(200).json(error.message)
+  }
+}
 
 
 

@@ -13,5 +13,5 @@ userProfileRouter.post('/users/userProfile', remoteUpload.fields([{ name: "profi
 
 userProfileRouter.patch('/users/userProfile', remoteUpload.fields([{ name: "profilePicture", maxCount: 1 }, { name: "resume", maxCount: 1 },]), checkAuth, updateUserProfile);
 
-userProfileRouter.get('/users/userProfile', checkAuth, getUserProfile);
+userProfileRouter.get('/users/userProfile', getUserProfile);
 
