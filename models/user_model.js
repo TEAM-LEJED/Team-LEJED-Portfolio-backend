@@ -7,6 +7,7 @@ const userSchema = new Schema({
         otherNames: { type: String },
         email: { type: String, lowercase: true, unique: true },
         password: { type: String },
+        confirmPassword: { type: String },
         userName: { type: String, lowercase: true, unique: true },
         termsAndConditions: { type: Boolean },
         githubLink: { type: String },

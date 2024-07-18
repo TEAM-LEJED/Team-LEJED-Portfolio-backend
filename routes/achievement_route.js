@@ -2,6 +2,7 @@
 import { createAchievements, deleteAchievements, findAllAchievements, patchAchievements } from "../controllers/achievements_controller.js";
 import { checkAuth } from "../middlewares/auth.js";
 import { remoteUpload } from "../middlewares/upload.js";
+
 import { Router } from "express";
 
 
@@ -11,6 +12,8 @@ achievementRouter.post('/users/achievements', checkAuth, remoteUpload.fields([
     { name: 'award' },
     { name: 'image' },
 ]), createAchievements)
+
+achievementRouter.post('/users/achievements', remoteUpload.single('image'), checkAuth, createAchievements)
 
 achievementRouter.get('/users/achievements', checkAuth, findAllAchievements)
 
