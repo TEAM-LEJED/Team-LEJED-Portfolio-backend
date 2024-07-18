@@ -34,7 +34,7 @@ export const createEducation = async (req, res) => {
     await user.save();
 
     //return the education
-    res.status(201).json({ education });
+    res.status(201).json({message: 'Education created successfully', education });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -47,9 +47,9 @@ export const getEducation = async (req, res) => {
     //we are fetching education that belongs to a particular user
     const userId = req.session?.user?.id || req?.user?.id
     const alleducation = await Education.find({ user: userId });
-    if (alleducation.length == 0) {
-      return res.status(200).send({ education: alleducation });
-    }
+    // if (alleducation.length == 0) {
+    //   return res.status(200).send({ education: alleducation });
+    // }
     res.status(200).json({ education: alleducation });
   } catch (error) {}
 };
@@ -89,7 +89,7 @@ export const patchEducation = async (req, res) => {
             return res.status(404).send("Education not found");
         }
   
-      res.status(201).json({ Education });
+      res.status(201).json({message: 'Education updated successfully', Education });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -114,7 +114,7 @@ export const patchEducation = async (req, res) => {
   
         user.education.pull(req.params.id);
         await user.save();
-      res.status(200).json("Education deleted");
+      res.status(200).json({message: "Education deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
