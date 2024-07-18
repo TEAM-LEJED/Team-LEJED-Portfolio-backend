@@ -8,6 +8,11 @@ import { Router } from "express";
 
 export const achievementRouter = Router()
 
+achievementRouter.post('/users/achievements', checkAuth, remoteUpload.fields([
+    { name: 'award' },
+    { name: 'image' },
+]), createAchievements)
+
 achievementRouter.post('/users/achievements', remoteUpload.single('image'), checkAuth, createAchievements)
 
 achievementRouter.get('/users/achievements', checkAuth, findAllAchievements)
