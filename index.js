@@ -79,8 +79,8 @@ console.log('Database is connected');
 // Listen for incoming requests
 const port = process.env.PORT || 4800;
 app.listen(port, () => {
-    reboot().then(() => {
-        console.log('Server restarted');
-    })
+    // reboot().then(() => {
+    //     console.log('Server restarted');
+    // })
     console.log(`App listening on port ${port}`);
 });
