@@ -24,7 +24,7 @@ export const createProjects = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ project });
+    res.status(201).json({message: 'Project created successfully', project });
   } catch (error) {
     console.log(error);
   }
@@ -37,9 +37,9 @@ export const getProjects = async (req, res) => {
     //we are fetching Project that belongs to a particular user
     const userId = req.session?.user?.id || req?.user?.id
     const allProject = await Project.find({ user: userId });
-    if (allProject.length == 0) {
-      return res.status(200).send({ Projects: allProject });
-    }
+    // if (allProject.length == 0) {
+    //   return res.status(200).send({ Projects: allProject });
+    // }
     res.status(200).json({ Projects: allProject });
   } catch (error) {
     return res.status(500).json({error})
@@ -82,7 +82,7 @@ export const patchProjects = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-      res.status(200).json({ project });
+      res.status(200).json({message: 'Project updated successfully', project });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -106,7 +106,7 @@ export const patchProjects = async (req, res) => {
   
         user.projects.pull(req.params.id);
         await user.save();
-      res.status(200).json("Project deleted");
+      res.status(200).json({message: "Project deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
