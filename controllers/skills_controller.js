@@ -15,12 +15,22 @@ export const addSkill = async (req, res, next) => {
         // // Find the user with the id passed when creating skills
         // console.log('userId', req.sesion.user.id)
 
-        // Retrieve user session
+        // Retrieve user session/token
         const userId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userId);
         if(!user){
             return res.status(404).send('User not found');
         }
+
+
+        // Extract the skill name from the request body
+         const {skillName} = req.body
+        //  Check if skill already exists
+        const existingSkill = await Skills.findOne({skillName: skillName}, {userId: userId});
+        if(existingSkill) {
+            return res.status(409).json('The skill already exists for this user')
+        }
+
 
         // Create skills with the value
         const skills = await Skills.create({...value, user: userId});
@@ -41,8 +51,9 @@ export const addSkill = async (req, res, next) => {
 // Function to get all skills
 export const getAllSkills = async (req, res) => {
     try {
+        // // Retrieve user session/token
+        // const userId = req.session?.user?.id || req?.user?.id;
         // Find skills for a particular user
-        const userId = req.session?.user?.id || req?.user?.id;
         const allSkills = await Skills.find({ user: userId });
         if (allSkills.length == 0) {
             return res.status(404).send('No skill added')
@@ -79,7 +90,7 @@ export const updateSkill = async (req, res) => {
         if (error){
             return res.status(400).send(error.details[0].message);
         }
-        // Retrieve user session
+        // Retrieve user session/token
         const userId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userId);
         if(!user){

@@ -12,10 +12,10 @@ userRouter.post('/users/auth/session/login', login);
 
 userRouter.post('/users/auth/logout', checkAuth, logout);
 
-userRouter.get('/users', getUsers)
+userRouter.get('/users', getUsers);
 
 userRouter.get('/users/auth/:userName', getUser);
 
 userRouter.patch('/users/:id', checkAuth, patchUser);
 
-userRouter.post('/users/token/login', tokenLogin)
+userRouter.post('/users/auth/token/login', tokenLogin)

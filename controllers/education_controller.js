@@ -3,14 +3,15 @@ import { Education } from "../models/education_model.js";
 import { UserModel } from "../models/user_model.js";
 import { educationSchema } from "../schema/education_schema.js";
 
+
+
+
 export const createEducation = async (req, res) => {
   try {
     const { error, value } = educationSchema.validate(req.body);
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-
-   
 
     //after, find the user with the id that you passed when creating the education
     console.log('userId',req.session.user.id)
@@ -39,6 +40,8 @@ export const createEducation = async (req, res) => {
   }
 };
 
+
+
 export const getEducation = async (req, res) => {
   try {
     //we are fetching education that belongs to a particular user
@@ -50,6 +53,22 @@ export const getEducation = async (req, res) => {
     res.status(200).json({ education: alleducation });
   } catch (error) {}
 };
+
+
+
+// Function to get one education for a particular user
+export const getOneEducation = async (req, res) => {
+  try {
+      // Get skill by id
+      const getEducationById = await Education.findById(req.params.id);
+      // Return response
+      res.status(200).json(getEducationById)
+  } catch (error) {
+      return res.status(200).json(error.message)
+  }
+}
+
+
 
 export const patchEducation = async (req, res) => {
     try {
@@ -76,6 +95,7 @@ export const patchEducation = async (req, res) => {
     }
   };
 
+  
 
   export const deleteEducation = async (req, res) => {
     try {

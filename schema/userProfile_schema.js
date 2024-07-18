@@ -5,6 +5,7 @@ export const userProfileSchema = Joi.object({
     profilePicture: Joi.string(),
     location: Joi.string().required(),
     sex: Joi.string().valid('Male', 'Female'),
+    dateOfBirth: Joi.string(),
     jobTitle: Joi.string(),
     bio: Joi.string(),
     contact: Joi.string(),
