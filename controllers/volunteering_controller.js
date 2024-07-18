@@ -50,7 +50,7 @@ export const getAllVolunteering = async (req, res) => {
     const userId = req.session?.user?.id || req?.user?.id;
     const allVolunteering = await Volunteering.find({ user: userId });
     if (allVolunteering.length == 0) {
-      return res.status(404).send("No Volunteering added");
+      return res.status(404).send({ Volunteerings: allVolunteering });
     }
     res.status(200).json({ Volunteerings: allVolunteering });
   } catch (error) {
