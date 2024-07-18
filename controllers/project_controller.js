@@ -48,6 +48,20 @@ export const getProjects = async (req, res) => {
 
 
 
+// Function to get one project for a particular user
+export const getOneProject = async (req, res) => {
+  try {
+      // Get project by id
+      const getProjectById = await Project.findById(req.params.id);
+      // Return response
+      res.status(200).json(getProjectById)
+  } catch (error) {
+      return res.status(200).json(error.message)
+  }
+}
+
+
+
 export const patchProjects = async (req, res) => {
     try {
       const { error, value } = projectSchema.validate({...req.body, image:req.file.filename});

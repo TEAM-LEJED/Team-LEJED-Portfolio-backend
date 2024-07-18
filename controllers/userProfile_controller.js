@@ -71,8 +71,8 @@ export const updateUserProfile = async (req, res, next) => {
 // Function to get the user profile
 export const getUserProfile = async (req, res) => {
     try {
-        // Retrieve user session or request
-        const userId = req.session?.user?.id || req?.user?.id;
+        // // Retrieve user session or request
+        // const userId = req.session?.user?.id || req?.user?.id;
         // Get user profile 
         const profile = await userProfile.find({ user: userId });
         if (!profile) {

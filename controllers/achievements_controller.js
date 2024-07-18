@@ -8,7 +8,8 @@ export const createAchievements = async (req, res) => {
     const { error, value } = achievementsSchema.validate({  
       ...req.body,
       award: req.files.award[0].filename,
-      image: req.files.image[0].filename,});
+      image: req.files.image[0].filename
+    });
 
     if (error) {
       return res.status(400).send(error.details[0].message);
@@ -34,16 +35,16 @@ export const createAchievements = async (req, res) => {
 };
 
 
-
+// Function to get all achievements
 export const findAllAchievements = async (req, res) => {
   try {
-    //we are fetching Achievement that belongs to a particular user
-    const userId = req.session?.user?.id || req?.user?.id
-    const allAchievement = await Achievements.find({ user: userId });
-    if (allAchievement.length == 0) {
+    // //we are fetching Achievement that belongs to a particular user
+    // const userId = req.session?.user?.id || req?.user?.id
+    const allAchievements = await Achievements.find({ user: userId });
+    if (allAchievements.length == 0) {
       return res.status(404).send("No Achievement added");
     }
-    res.status(200).json({ Achievements: allAchievement });
+    res.status(200).json({ Achievements: allAchievements });
   } catch (error) {
     return res.status(500).json({error})
   }
@@ -51,6 +52,20 @@ export const findAllAchievements = async (req, res) => {
 
 
 
+// Function to get one achievement for a particular user
+export const getOneAchievement = async (req, res) => {
+  try {
+      // Get skill by id
+      const getAchievementById = await Achievements.findById(req.params.id);
+      // Return response
+      res.status(200).json(getAchievementById)
+  } catch (error) {
+      return res.status(200).json(error.message)
+  }
+}
+
+
+// Function to update an achievement
 export const patchAchievements = async (req, res) => {
     try {
       const { error, value } = achievementsSchema.validate({  
@@ -106,14 +121,14 @@ export const patchAchievements = async (req, res) => {
   };
   
 
-  // To get/find a specific Achievement through an ID
-export const findAchievementsById = async (req, res) => {
+//   // To get/find a specific Achievement through an ID
+// export const findAchievementsById = async (req, res) => {
 
-    try {
-        console.log('Geting specific data', req.body);
-        const achievements = await Achievements.findById(req.params.id)
-        res.status(200).send(achievements)
-    } catch (error) {
-        console.log(error);
-    }
-}
+//     try {
+//         console.log('Geting specific data', req.body);
+//         const achievements = await Achievements.findById(req.params.id)
+//         res.status(200).send(achievements)
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
