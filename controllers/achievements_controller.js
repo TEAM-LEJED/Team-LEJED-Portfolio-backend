@@ -42,7 +42,7 @@ export const findAllAchievements = async (req, res) => {
     // const userId = req.session?.user?.id || req?.user?.id
     const allAchievements = await Achievements.find({ user: userId });
     if (allAchievements.length == 0) {
-      return res.status(404).send("No Achievement added");
+      return res.status(200).send({Achievements: allAchievements});
     }
     res.status(200).json({ Achievements: allAchievements });
   } catch (error) {
