@@ -51,7 +51,7 @@ export const getExperience = async (req, res) => {
     // }
     return res.status(200).json({ Experience: allExperience });
   } catch (error) {
-    return res.status(500).json({error})
+     res.status(500).json({error})
   }
 };
 
