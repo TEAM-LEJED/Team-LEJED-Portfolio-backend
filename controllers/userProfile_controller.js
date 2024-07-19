@@ -29,7 +29,7 @@ export const newUserProfile = async (req, res, next) => {
 
         await user.save()
         // Return response
-        res.status(201).json({message: 'User Profile created successfully', profile })
+        return res.status(201).json({message: 'User Profile created successfully', profile })
     } catch (error) {
         next(error)
     }
@@ -61,7 +61,7 @@ export const updateUserProfile = async (req, res, next) => {
             return res.status(404).send('Profile not found');
         }
         // Return response
-        res.status(200).json({message: 'User Profile updated successfully', profile })
+        return res.status(200).json({message: 'User Profile updated successfully', profile })
     } catch (error) {
         next(error)
     }
@@ -72,14 +72,14 @@ export const updateUserProfile = async (req, res, next) => {
 export const getUserProfile = async (req, res) => {
     try {
         // // Retrieve user session or request
-        // const userId = req.session?.user?.id || req?.user?.id;
+        const userId = req.session?.user?.id || req?.user?.id;
         // Get user profile 
-        const profile = await userProfile.find({ user: userId });
+        const profile = await userProfile.findById({ user: userId });
         if (!profile) {
             return res.status(404).send({ profile });
         }
         // Return response
-        res.status(200).json({ profile });
+       return res.status(200).json({ profile });
     } catch (error) {
         return res.status(500).json({ error })
     }

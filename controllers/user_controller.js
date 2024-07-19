@@ -22,10 +22,10 @@ export const signup = async (req, res, next) => {
             return res.status(401).send('User has already signed up')
         } else {
             // Encrypt user password
-            const hashedPassword = await bcrypt.hash(value.password, 12);
+            const hashedPassword =  bcrypt.hashSync(value.password, 12);
             value.password = hashedPassword;
             // Create user
-            const addUser = await UserModel.create(value)
+             await UserModel.create(value)
             // Generate a session for the user
             req.session.user = { id: addUser.id }
             return res.status(201).send('Account created successfully')
@@ -55,23 +55,23 @@ export const login = async (req, res, next) => {
         // Find a user using their userName or email
         const user = await UserModel.findOne({
             $or: [
-                { email: email },
-                { userName: userName }
+                { email },
+                { userName }
             ]
         });
         if (!user) {
-            res.status(401).json('User not found');
+            return  res.status(401).json('User not found');
         } else {
             // Verify their password
             const correctPassword = bcrypt.compareSync(password, user.password);
             if (!correctPassword) {
-                res.status(401).json('Invalid login credentials');
+                return   res.status(401).json('Invalid login credentials');
             } else {
                 // Generate a session for the user
                 req.session.user = { id: user.id }
                 // console.log('user', req.session.user)
                 // Return response
-                res.status(200).json('Login successful');
+                return   res.status(200).json('Login successful');
             }
         }
     } catch (error) {
@@ -93,12 +93,12 @@ export const tokenLogin = async (req, res, next) => {
             ]
         });
         if (!user) {
-            res.status(401).json('User not found');
+            return  res.status(401).json('User not found');
         } else {
             // Verify their password
             const correctPassword = bcrypt.compareSync(password, user.password);
             if (!correctPassword) {
-                res.status(401).json('Invalid login credentials');
+                return res.status(401).json('Invalid login credentials');
             } else {
                 // Create a token for the user
                 const token = jwt.sign({ id: user.id},
@@ -106,7 +106,7 @@ export const tokenLogin = async (req, res, next) => {
                     { expiresIn: '72h' }
                     );
                 // Return response
-                res.status(200).json({
+                return  res.status(200).json({
                     message: 'User logged in',
                     accessToken: token
                 });
@@ -127,7 +127,7 @@ export const getUser = async (req, res, next) => {
         // Get user details
         const getUserDetails = await UserModel
             .findOne({userName})
-            .select({ password: false })
+            .select({password: false })
             .populate({path: 'userProfile', options})
             .populate({path: 'education', options})
             .populate({path: 'experience', options})
@@ -136,7 +136,7 @@ export const getUser = async (req, res, next) => {
             .populate({path: 'projects', options})
             .populate({path: 'volunteering', options});
         // Return response
-        res.status(200).json({user: getUserDetails})
+        return res.status(200).json({user: getUserDetails})
     } catch (error) {
         // next(error)
         console.log(error)
@@ -175,7 +175,7 @@ export const patchUser = async (req, res) => {
     try {
         // Update user by id
         const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(200).json(updatedUser);
+        return  res.status(200).json(updatedUser);
     } catch (error) {
         console.log(error)
     }
@@ -189,7 +189,7 @@ export const logout = async (req, res) => {
         // Destroy user session
         await req.session.destroy();
         // Return response
-        res.status(200).json('Logout successful');
+        return res.status(200).json('Logout successful');
     } catch (error) {
         console.log(error)
     }

@@ -35,7 +35,7 @@ export const createVolunteering = async (req, res) => {
     await user.save();
 
     // Return response
-    res.status(201).json({message: 'Volunteering activity created successfully', volunteering });
+    return res.status(201).json({message: 'Volunteering activity created successfully', volunteering });
   } catch (error) {
     console.log(error);
   }
@@ -52,7 +52,7 @@ export const getAllVolunteering = async (req, res) => {
     // if (allVolunteering.length == 0) {
     //   return res.status(404).send({ Volunteerings: allVolunteering });
     // }
-    res.status(200).json({ Volunteerings: allVolunteering });
+    return res.status(200).json({ Volunteerings: allVolunteering });
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -63,10 +63,11 @@ export const getAllVolunteering = async (req, res) => {
 // Function to get one volunteering activity for a particular user
 export const getOneVolunteering = async (req, res) => {
   try {
+    
       // Get volunteering activity by id
       const getVolunteeringById = await Volunteering.findById(req.params.id);
       // Return response
-      res.status(200).json(getVolunteeringById)
+      return  res.status(200).json(getVolunteeringById)
   } catch (error) {
       return res.status(200).json(error.message)
   }
@@ -101,7 +102,7 @@ export const updateVolunteering = async (req, res) => {
       return res.status(404).send("Volunteering not found");
     }
 
-    res.status(200).json({message: 'Volunteering activity updated successfully', volunteering });
+    return res.status(200).json({message: 'Volunteering activity updated successfully', volunteering });
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -130,7 +131,7 @@ export const deleteVolunteering = async (req, res) => {
     // Save the change
     await user.save();
 
-    res.status(200).json({message: "Volunteering activity deleted"});
+    return res.status(200).json({message: "Volunteering activity deleted"});
   } catch (error) {
     return res.status(500).json({ error });
   }

@@ -34,7 +34,7 @@ export const createEducation = async (req, res) => {
     await user.save();
 
     //return the education
-    res.status(201).json({message: 'Education created successfully', education });
+    return res.status(201).json({message: 'Education created successfully', education });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -50,7 +50,7 @@ export const getEducation = async (req, res) => {
     // if (alleducation.length == 0) {
     //   return res.status(200).send({ education: alleducation });
     // }
-    res.status(200).json({ education: alleducation });
+    return res.status(200).json({ education: alleducation });
   } catch (error) {}
 };
 
@@ -62,7 +62,7 @@ export const getOneEducation = async (req, res) => {
       // Get skill by id
       const getEducationById = await Education.findById(req.params.id);
       // Return response
-      res.status(200).json(getEducationById)
+      return  res.status(200).json(getEducationById)
   } catch (error) {
       return res.status(200).json(error.message)
   }
@@ -89,7 +89,7 @@ export const patchEducation = async (req, res) => {
             return res.status(404).send("Education not found");
         }
   
-      res.status(201).json({message: 'Education updated successfully', Education });
+        return res.status(201).json({message: 'Education updated successfully', Education });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -114,7 +114,7 @@ export const patchEducation = async (req, res) => {
   
         user.education.pull(req.params.id);
         await user.save();
-      res.status(200).json({message: "Education deleted"});
+        return res.status(200).json({message: "Education deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }

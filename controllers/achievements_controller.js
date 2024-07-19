@@ -7,8 +7,7 @@ export const createAchievements = async (req, res) => {
   try {
     const { error, value } = achievementsSchema.validate({  
       ...req.body,
-      award: req.files.award[0].filename,
-      image: req.files.image[0].filename
+      image: req.file.filename
     });
 
     if (error) {
@@ -28,7 +27,7 @@ export const createAchievements = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({message: 'Achievement created successfully', achievement });
+    return res.status(201).json({message: 'Achievement created successfully', achievement });
   } catch (error) {
     console.log(error)
     next(error);
@@ -45,7 +44,7 @@ export const findAllAchievements = async (req, res) => {
     // if (allAchievements.length == 0) {
     //   return res.status(200).send({Achievements: allAchievements});
     // }
-    res.status(200).json({ Achievements: allAchievements });
+    return res.status(200).json({ Achievements: allAchievements });
   } catch (error) {
     return res.status(500).json({error})
   }
@@ -59,7 +58,7 @@ export const getOneAchievement = async (req, res) => {
       // Get skill by id
       const getAchievementById = await Achievements.findById(req.params.id);
       // Return response
-      res.status(200).json(getAchievementById)
+      return res.status(200).json(getAchievementById)
   } catch (error) {
       return res.status(200).json(error.message)
   }
@@ -71,8 +70,7 @@ export const patchAchievements = async (req, res) => {
     try {
       const { error, value } = achievementsSchema.validate({  
         ...req.body,
-        award: req.files.award[0].filename,
-        image: req.files.image[0].filename,});
+        image: req.file.filename,});
 
   
       if (error) {
@@ -90,7 +88,7 @@ export const patchAchievements = async (req, res) => {
             return res.status(404).send("Achievement not found");
         }
   
-      res.status(200).json({ message: 'Achievement updated successfully', achievement });
+        return res.status(200).json({ message: 'Achievement updated successfully', achievement });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -115,7 +113,7 @@ export const patchAchievements = async (req, res) => {
         user.achievements.pull(req.params.id);
         await user.save();
 
-      res.status(200).json({message: "Achievement deleted"});
+        return res.status(200).json({message: "Achievement deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
