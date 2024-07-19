@@ -3,9 +3,9 @@ import { Schema, model, Types } from "mongoose";
 
 const userEducationSchema= new Schema({
     schoolName: { type: String },
+    location: { type: String },
     program: { type: String },
     qualification: { type: String },
-    location: { type: String },
     grade: { type: String },
     startDate: { type: String },
     endDate: { type: String },

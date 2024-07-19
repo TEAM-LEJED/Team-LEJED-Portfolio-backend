@@ -15,9 +15,9 @@ export const checkAuth = (req, res, next) => {
             next();
             res.json(user);
         } catch (error) {
-            res.status(401).json({error: 'Token Expired'});
+            return  res.status(401).json({error: 'Token Expired'});
         }
     } else {
-        res.status(401).json({error:'User not authenticated'})
+        return res.status(401).json({error:'User not authenticated'})
     }
 }

@@ -33,7 +33,7 @@ export const createExperience = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({message: 'Experience created successfully', experience });
+    return res.status(201).json({message: 'Experience created successfully', experience });
   } catch (error) {
     console.log(error);
   }
@@ -49,7 +49,7 @@ export const getExperience = async (req, res) => {
     // if (allExperience.length == 0) {
     //   return res.status(200).send({ Experience: allExperience });
     // }
-    res.status(200).json({ Experience: allExperience });
+    return res.status(200).json({ Experience: allExperience });
   } catch (error) {
     return res.status(500).json({error})
   }
@@ -63,7 +63,7 @@ export const getOneExperience = async (req, res) => {
       // Get experience by id
       const getExperienceById = await Experience.findById(req.params.id);
       // Return response
-      res.status(200).json(getExperienceById)
+      return  res.status(200).json(getExperienceById)
   } catch (error) {
       return res.status(200).json(error.message)
   }
@@ -90,7 +90,7 @@ export const patchExperience = async (req, res) => {
             return res.status(404).send("experience not found");
         }
   
-      res.status(200).json({message: 'Experience updated successfully', experience });
+        return  res.status(200).json({message: 'Experience updated successfully', experience });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -114,7 +114,7 @@ export const patchExperience = async (req, res) => {
   
         user.experience.pull(req.params.id);
         await user.save();
-      res.status(200).json({message: "Experience deleted"});
+        return res.status(200).json({message: "Experience deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
