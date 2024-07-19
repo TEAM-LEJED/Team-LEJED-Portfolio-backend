@@ -8,6 +8,6 @@ export const restartServer = async () => {
         console.log('Health Check Status:', response.data.status);
     } catch (error) {
         console.error('Health Check Failed:', error.message)
-        next(error);
+        // next(error);
     }
 };
