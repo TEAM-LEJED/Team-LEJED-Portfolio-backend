@@ -6,37 +6,74 @@ import jwt from "jsonwebtoken";
 
 
 // Function for sign up
-export const signup = async (req, res) => {
+// export const signup = async (req, res) => {
 
+//     try {
+//         // Validate the data provided by the user
+//         const { error, value } = userSchema.validate(req.body)
+//         if (error) {
+//             return res.status(400).send(error.details[0].message)
+//         }
+
+//         const email = value.email
+
+//         const findIfUserExists = await UserModel.findOne({ email });
+//         if (findIfUserExists) {
+//             return res.status(401).send('User has already signed up')
+//         } else {
+//             // Encrypt user password
+//             const hashedPassword =  bcrypt.hashSync(value.password, 12);
+//             value.password = hashedPassword;
+//             // Create user
+//              await UserModel.create(value)
+//             // Generate a session for the user
+//             req.session.user = { id: addUser.id }
+//             return res.status(201).send('Account created successfully')
+//         }
+//     } catch (error) {
+//         // next(error)
+//     }
+
+// }
+
+export const signup = async (req, res) => {
     try {
+        console.log('Received signup request:', req.body);
+
         // Validate the data provided by the user
-        const { error, value } = userSchema.validate(req.body)
+        const { error, value } = userSchema.validate(req.body);
         if (error) {
-            return res.status(400).send(error.details[0].message)
+            console.error('Validation Error:', error.details[0].message);
+            return res.status(400).send(error.details[0].message);
         }
 
-        const email = value.email
+        const email = value.email;
+        console.log('Validation successful. Checking if user exists with email:', email);
 
-        const findIfUserExists = await UserModel.findOne({ email });
-        if (findIfUserExists) {
-            return res.status(401).send('User has already signed up')
+        const findIfUserExist = await UserModel.findOne({ email });
+        console.log('findIfUserExist result:', findIfUserExist);
+
+        if (findIfUserExist) {
+            console.log('User already exists:', findIfUserExist);
+            return res.status(401).send("User has already signed up");
         } else {
+            console.log('User does not exist, creating new user');
             // Encrypt user password
-            const hashedPassword =  bcrypt.hashSync(value.password, 12);
+            const hashedPassword = await bcrypt.hash(value.password, 12);
             value.password = hashedPassword;
+            delete value.confirmPassword; // Remove confirmPassword from the value object
+
             // Create user
-             await UserModel.create(value)
-            // Generate a session for the user
-            req.session.user = { id: addUser.id }
-            return res.status(201).send('Account created successfully')
+            const newUser = await UserModel.create(value);
+            console.log('New user created:', newUser);
+
+            return res.status(201).json({ message: "Registration successful" });
         }
     } catch (error) {
-        // next(error)
+        console.error('Error during signup:', error);
+        return res.status(500).send('Internal Server Error');
     }
-
-}
-
-
+};
 
 
 // Function for log in
@@ -120,7 +157,7 @@ export const tokenLogin = async (req, res) => {
 
 
 // Function to get everything about one user
-export const getUser = async (req, res) => {
+export const getUser = async (req, res,next) => {
     try {
         const userName = req.params.userName.toLowerCase();
         const options = { sort: {startDate: -1 }}
@@ -138,8 +175,8 @@ export const getUser = async (req, res) => {
         // Return response
         return res.status(200).json({user: getUserDetails})
     } catch (error) {
-        // next(error)
-        // console.log(error)
+        next(error)
+        console.log(error)
     }
 }
 
