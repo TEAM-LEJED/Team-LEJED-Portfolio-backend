@@ -30,7 +30,6 @@ export const createAchievements = async (req, res) => {
     return res.status(201).json({message: 'Achievement created successfully', achievement });
   } catch (error) {
     console.log(error)
-    next(error);
   }
 };
 

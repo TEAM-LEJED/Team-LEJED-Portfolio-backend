@@ -42,7 +42,7 @@ export const getProjects = async (req, res) => {
     // }
     return res.status(200).json({ Projects: allProject });
   } catch (error) {
-    return res.status(500).json({error})
+     res.status(500).json({error})
   }
 };
 

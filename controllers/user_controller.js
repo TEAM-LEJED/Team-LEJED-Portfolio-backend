@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 
 // Function for sign up
-export const signup = async (req, res, next) => {
+export const signup = async (req, res) => {
 
     try {
         // Validate the data provided by the user
@@ -31,7 +31,7 @@ export const signup = async (req, res, next) => {
             return res.status(201).send('Account created successfully')
         }
     } catch (error) {
-        next(error)
+        // next(error)
     }
 
 }
@@ -40,7 +40,7 @@ export const signup = async (req, res, next) => {
 
 
 // Function for log in
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
     try {
         const { userName, email, password } = req.body;
         // // Validate the data provided by the user
@@ -75,13 +75,13 @@ export const login = async (req, res, next) => {
             }
         }
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 
 
 // Function for token log in
-export const tokenLogin = async (req, res, next) => {
+export const tokenLogin = async (req, res) => {
     try {
         const { userName, email, password } = req.body;
         
@@ -113,14 +113,14 @@ export const tokenLogin = async (req, res, next) => {
             }
         }
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 
 
 
 // Function to get everything about one user
-export const getUser = async (req, res, next) => {
+export const getUser = async (req, res) => {
     try {
         const userName = req.params.userName.toLowerCase();
         const options = { sort: {startDate: -1 }}
@@ -139,13 +139,13 @@ export const getUser = async (req, res, next) => {
         return res.status(200).json({user: getUserDetails})
     } catch (error) {
         // next(error)
-        console.log(error)
+        // console.log(error)
     }
 }
 
 
 // Function to get all users to cross-check if a username already exists
-export const getUsers = async (req, res, next) => {
+export const getUsers = async (req, res) => {
     try {
         // Extract email and userName from query parameters to convert to lower case
         const email = req.query.email?.toLowerCase()
@@ -164,7 +164,7 @@ export const getUsers = async (req, res, next) => {
         // Return response
         return res.status(200).json({ users });
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 

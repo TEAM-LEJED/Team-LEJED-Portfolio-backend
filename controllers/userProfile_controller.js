@@ -4,7 +4,7 @@ import { UserModel } from "../models/user_model.js";
 
 
 // Function to add a user profile
-export const newUserProfile = async (req, res, next) => {
+export const newUserProfile = async (req, res) => {
     try {
         // Validate data provided by user
         const { error, value } = userProfileSchema.validate({
@@ -31,14 +31,14 @@ export const newUserProfile = async (req, res, next) => {
         // Return response
         return res.status(201).json({message: 'User Profile created successfully', profile })
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 
 
 
 // Function to update a user profile
-export const updateUserProfile = async (req, res, next) => {
+export const updateUserProfile = async (req, res) => {
     try {
         // Validate data provided by user
         const { error, value } = userProfileSchema.validate({
@@ -63,7 +63,7 @@ export const updateUserProfile = async (req, res, next) => {
         // Return response
         return res.status(200).json({message: 'User Profile updated successfully', profile })
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 

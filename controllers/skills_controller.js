@@ -4,7 +4,7 @@ import { UserModel } from "../models/user_model.js";
 
 
 // Function to add a skill
-export const addSkill = async (req, res, next) => {
+export const addSkill = async (req, res) => {
     try {
         // Validate data provided by the user
         const { error, value } = skillsSchema.validate(req.body);
@@ -42,7 +42,7 @@ export const addSkill = async (req, res, next) => {
         // Return the skills
         return res.status(201).json({message: 'Skill created successfully', skills })
     } catch (error) {
-        next(error)
+        // next(error)
     }
 }
 
