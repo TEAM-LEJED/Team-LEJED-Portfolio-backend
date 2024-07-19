@@ -8,15 +8,12 @@ import { Router } from "express";
 
 export const achievementRouter = Router()
 
-achievementRouter.post('/users/achievements', checkAuth, remoteUpload.fields([
-    { name: 'award' },
-    { name: 'image' },
-]), createAchievements);
+achievementRouter.post('/users/achievements', checkAuth, remoteUpload.single('image'), createAchievements);
 
 achievementRouter.get('/users/achievements', findAllAchievements);
 
 achievementRouter.get('/users/achievements/:id', getOneAchievement);
 
-achievementRouter.patch('/users/achievements/:id', remoteUpload.single('image'), checkAuth, patchAchievements);
+achievementRouter.patch('/users/achievements/:id',checkAuth, remoteUpload.single('image'),  patchAchievements);
 
 achievementRouter.delete('/users/achievements/:id', checkAuth, deleteAchievements);

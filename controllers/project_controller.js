@@ -24,7 +24,7 @@ export const createProjects = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({message: 'Project created successfully', project });
+    return res.status(201).json({message: 'Project created successfully', project });
   } catch (error) {
     console.log(error);
   }
@@ -40,7 +40,7 @@ export const getProjects = async (req, res) => {
     // if (allProject.length == 0) {
     //   return res.status(200).send({ Projects: allProject });
     // }
-    res.status(200).json({ Projects: allProject });
+    return res.status(200).json({ Projects: allProject });
   } catch (error) {
     return res.status(500).json({error})
   }
@@ -82,7 +82,7 @@ export const patchProjects = async (req, res) => {
             return res.status(404).send("Project not found");
         }
   
-      res.status(200).json({message: 'Project updated successfully', project });
+        return res.status(200).json({message: 'Project updated successfully', project });
     } catch (error) {
       return res.status(500).json({error})
     }
@@ -106,7 +106,7 @@ export const patchProjects = async (req, res) => {
   
         user.projects.pull(req.params.id);
         await user.save();
-      res.status(200).json({message: "Project deleted"});
+        return res.status(200).json({message: "Project deleted"});
     } catch (error) {
       return res.status(500).json({error})
     }
