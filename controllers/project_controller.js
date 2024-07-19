@@ -34,15 +34,21 @@ export const createProjects = async (req, res) => {
 
 export const getProjects = async (req, res) => {
   try {
-    //we are fetching Project that belongs to a particular user
-    const userId = req.session?.user?.id || req?.user?.id
+    // Fetching Project that belongs to a particular user
+    const userId = req.session?.user?.id || req?.user?.id;
+    
+    // Check if userId is available
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID not found in session or request' });
+    }
+
     const allProject = await Project.find({ user: userId });
-    // if (allProject.length == 0) {
-    //   return res.status(200).send({ Projects: allProject });
-    // }
+
     return res.status(200).json({ Projects: allProject });
   } catch (error) {
-     res.status(500).json({error})
+    // Log the error for debugging
+    console.error('Error fetching projects:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
