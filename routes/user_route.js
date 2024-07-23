@@ -1,14 +1,16 @@
-import { getUser, patchUser, signup, login, logout, tokenLogin, getUsers } from "../controllers/user_controller.js";
+import { getUser, patchUser, signup, logout, tokenLogin, getUsers, sessionLogin } from "../controllers/user_controller.js";
 import { Router } from "express";
 import { checkAuth } from "../middlewares/auth.js";
 
 
-
+// Create router
 export const userRouter = Router()
 
+
+// Define routes
 userRouter.post('/users/auth/signup', signup);
 
-userRouter.post('/users/auth/session/login', login);
+userRouter.post('/users/auth/session/login', sessionLogin);
 
 userRouter.post('/users/auth/logout', checkAuth, logout);
 

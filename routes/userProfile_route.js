@@ -11,7 +11,7 @@ export const userProfileRouter = Router()
 // Define routes
 userProfileRouter.post('/users/userProfile', remoteUpload.fields([{ name: "profilePicture", maxCount: 1 }, { name: "resume", maxCount: 1 },]), checkAuth, newUserProfile);
 
-userProfileRouter.patch('/users/userProfile', remoteUpload.fields([{ name: "profilePicture", maxCount: 1 }, { name: "resume", maxCount: 1 },]), checkAuth, updateUserProfile);
+userProfileRouter.patch('/users/userProfile/:id', remoteUpload.fields([{ name: "profilePicture", maxCount: 1 }, { name: "resume", maxCount: 1 },]), checkAuth, updateUserProfile);
 
 userProfileRouter.get('/users/userProfile', getUserProfile);
 

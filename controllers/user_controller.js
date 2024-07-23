@@ -76,8 +76,8 @@ export const signup = async (req, res) => {
 };
 
 
-// Function for log in
-export const login = async (req, res) => {
+// Function for session log in
+export const sessionLogin = async (req, res) => {
     try {
         const { userName, email, password } = req.body;
         // // Validate the data provided by the user
@@ -150,7 +150,7 @@ export const tokenLogin = async (req, res) => {
             }
         }
     } catch (error) {
-        // next(error)
+        next(error)
     }
 }
 
