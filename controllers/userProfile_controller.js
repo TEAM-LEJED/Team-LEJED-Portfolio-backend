@@ -4,13 +4,13 @@ import { UserModel } from "../models/user_model.js";
 
 
 // Function to add a user profile
-export const newUserProfile = async (req, res) => {
+export const newUserProfile = async (req, res, next) => {
     try {
         // Validate data provided by user
         const { error, value } = userProfileSchema.validate({
             ...req.body,
-            profilePicture: req.files.profilePicture[0].fileName,
-            resume: req.files.resume[0].fileName,
+            profilePicture: req.files?.profilePicture[0].fileName,
+            resume: req.files?.resume[0].fileName,
         });
         if (error) {
             return res.status(400).send(error.details[0].message)
@@ -31,7 +31,7 @@ export const newUserProfile = async (req, res) => {
         // Return response
         return res.status(201).json({message: 'User Profile created successfully', profile })
     } catch (error) {
-        // next(error)
+        next(error)
     }
 }
 
@@ -40,12 +40,21 @@ export const newUserProfile = async (req, res) => {
 // Function to update a user profile
 export const updateUserProfile = async (req, res) => {
     try {
+        const updateFields = { ...req.body };
+
+        if (req.file?.profilePicture) {
+            updateFields.profilePicture = req.file.fileName;
+        } else if (req.files?.profilePicture) {
+            updateFields.profilePicture = req.files.profilePicture[0].fileName;
+        }
+
+        if (req.file?.resume) {
+            updateFields.resume = req.file.fileName;
+        } else if (req.files?.resume) {
+            updateFields.resume = req.files.resume[0].fileName;
+        }
         // Validate data provided by user
-        const { error, value } = userProfileSchema.validate({
-            ...req.body,
-            profilePicture: req.files.profilePicture[0].fileName,
-            resume: req.files.resume[0].fileName,
-        });
+        const { error, value } = userProfileSchema.validate({updateFields});
         if (error) {
             return res.status(400).send(error.details[0].message);
         }
@@ -63,18 +72,21 @@ export const updateUserProfile = async (req, res) => {
         // Return response
         return res.status(200).json({message: 'User Profile updated successfully', profile })
     } catch (error) {
-        // next(error)
+        console.log(error);
     }
-}
+};
 
 
 // Function to get the user profile
 export const getUserProfile = async (req, res) => {
     try {
-        // // Retrieve user session or request
+        // Retrieve user session or request
         const userId = req.session?.user?.id || req?.user?.id;
         // Get user profile 
-        const profile = await userProfile.findById({ user: userId });
+        const profile = await userProfile.findById({ user: userId }).populate({
+            path: 'user',
+            select: '-password'
+        });
         if (!profile) {
             return res.status(404).send({ profile });
         }
